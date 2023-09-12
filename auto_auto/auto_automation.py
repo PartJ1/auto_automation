@@ -166,7 +166,7 @@ def load_file():
         pass
 
 def ask_delete(e):
-    dlt_menu.tk_popup(e.x_root, e.y_root)
+    dlt_menu.tk_popup(e.x, e.y)
 
 def dlt_item():
     for item in lb1.curselection():
