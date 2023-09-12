@@ -18,6 +18,7 @@ recording = False
 list_of = []
 true_list_of = []
 replay = []
+stop_key = "key.esc"
 
 # dlt menu
 dlt_menu = tk.Menu(window, tearoff=False)
@@ -44,7 +45,7 @@ delay_btn = tk.OptionMenu(btn_one_frame, delay_sec, options[0], options[1], opti
 
 # list of actions
 my_frame = tk.Frame(window)
-lb1 = tk.Listbox(my_frame, width=30, height=10, selectmode=tk.SINGLE)
+lb1 = tk.Listbox(my_frame, width=35, height=20, selectmode=tk.SINGLE)
 scrollbar = tk.Scrollbar(my_frame)
 lb1.config(yscrollcommand=scrollbar.set)
 scrollbar.config(command=lb1.yview)
@@ -58,30 +59,37 @@ load_btn = tk.Button(btn_two_frame, text="Load")
 def play_back():
     global delay_sec
     global replay
+
+    bool_replay = True
+
     delay_sec_pure = delay_sec.get()
     if delay_sec_pure != "Delay":
         sleep(int(delay_sec_pure[:-1]))
-    for action in replay:
-        if action[0] == "key":
-            if len(str(action[1])) == 3:
-                key = str(action[1])[1]
-            else:
-                key = str(action[1]).split(".")[1].split(":")[0]
-            pyautogui.press(key)
+    while bool_replay:
+        for action in replay:
+            if pyautogui.press('esc'):
+                bool_replay = False
+                break
+            if action[0] == "key":
+                if len(str(action[1])) == 3:
+                    key = str(action[1])[1]
+                else:
+                    key = str(action[1]).split(".")[1].split(":")[0]
+                pyautogui.press(key)
 
-        elif action[0] == "click":
-            ignore, x, y, button, up_or = action
-            if up_or:
-                pyautogui.mouseDown(button=str(button).split(".")[1], x=x, y=y)
-            else:
-                pyautogui.mouseUp(button=str(button).split(".")[1], x=x, y=y)
+            elif action[0] == "click":
+                ignore, x, y, button, up_or = action
+                if up_or:
+                    pyautogui.mouseDown(button=str(button).split(".")[1], x=x, y=y)
+                else:
+                    pyautogui.mouseUp(button=str(button).split(".")[1], x=x, y=y)
 
-        elif action[0] == "scroll":
-            x, y, dx, dy = action[1:]
-            if dy != 0:
-                pyautogui.scroll(dy)
-            else:
-                pyautogui.hscroll(dx)
+            elif action[0] == "scroll":
+                x, y, dx, dy = action[1:]
+                if dy != 0:
+                    pyautogui.scroll(dy)
+                else:
+                    pyautogui.hscroll(dx)
 
 
 def record_fn():
@@ -172,7 +180,6 @@ def dlt_item():
     for item in lb1.curselection():
         lb1.delete(item)
         replay.pop(item)
-
 
 # dlt listbox item
 dlt_menu.add_command(label="DELETE", command=dlt_item)
