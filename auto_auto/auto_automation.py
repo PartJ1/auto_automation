@@ -67,7 +67,7 @@ def play_back():
         sleep(int(delay_sec_pure[:-1]))
     while bool_replay:
         for action in replay:
-            if pyautogui.press('esc'):
+            if pyautogui.is_pressed('esc'):
                 bool_replay = False
                 break
             if action[0] == "key":
