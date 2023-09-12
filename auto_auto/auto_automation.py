@@ -1,5 +1,5 @@
 import tkinter as tk
-import keyboard
+import keyboard as kb
 import csv
 from tkinter import filedialog
 import pyautogui
@@ -68,7 +68,7 @@ def play_back():
         sleep(int(delay_sec_pure[:-1]))
     while bool_replay:
         for action in replay:
-            if keyboard.is_pressed('esc'):
+            if kb.is_pressed('esc'):
                 bool_replay = False
                 break
             if action[0] == "key":
