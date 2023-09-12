@@ -152,7 +152,7 @@ def save_file():
     global replay
     f = filedialog.asksaveasfile(initialfile = 'Untitled.csv',defaultextension=".csv",filetypes=[("Spread Sheets","*.csv")], initialdir="/savefiles")
     try:
-        with open(str(f).split("'")[1], "w") as f:
+        with open(str(f).split("'")[1], "w", newline="") as f:
             wr = csv.writer(f)
             wr.writerows(replay)
     except IndexError:
